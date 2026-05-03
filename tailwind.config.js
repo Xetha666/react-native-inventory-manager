@@ -7,7 +7,20 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        'small': '8px',
+      },
+      colors: {
+        'brand': {
+          'primary': '#6366f1',    // El morado del icono activo
+          'secondary': '#94a3b8',  // El gris de los iconos inactivos
+          'light': '#eef2ff',      // El fondo celeste suave del icono activo
+          'navbar': '#ffffff',     // El blanco del fondo del navbar
+          'off-white': '#F9FAFF',
+        }
+      }
+    },
   },
   plugins: [],
 }
