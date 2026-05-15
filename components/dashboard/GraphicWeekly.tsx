@@ -12,13 +12,13 @@ export default function GraphicWeekly() {
   const CHART_WIDTH = screenWidth - CONTAINER_PADDING - CARD_PADDING;
 
   const lineData = [
-    {value: 20, label: 'MON'},
-    {value: 35},
-    {value: 30, label: 'WED'},
-    {value: 45},
-    {value: 25, label: 'FRI'},
-    {value: 55},
-    {value: 40, label: 'SUN'},
+    {value: 20, label: 'LUN'},
+    {value: 35, label: 'MAR'},
+    {value: 30, label: 'MIE'},
+    {value: 45, label: 'JUE'},
+    {value: 25, label: 'VIE'},
+    {value: 55, label: 'SAB'},
+    {value: 40, label: 'DOM'},
   ];
 
   return (
@@ -30,30 +30,34 @@ export default function GraphicWeekly() {
         </Pressable>
       </View>
 
-      <View className="items-center -ml-5">
+      <View className="items-center" style={{ marginLeft: -10 }}>
         <LineChart
           data={lineData}
-          height={150}
+          height={180}
           width={CHART_WIDTH}
-          initialSpacing={25}
-          spacing={(CHART_WIDTH - 40) / (lineData.length - 1)}
-          thickness={4}
+          initialSpacing={15}
+          endSpacing={40}
+          spacing={(CHART_WIDTH - 25) / (lineData.length - 1)}
+          thickness={2}
           hideRules
           hideYAxisText
           yAxisThickness={0}
           xAxisThickness={0}
           color={COLORS.primary}
           curved
+          curveType={1}
+          maxValue={100} // ESTO ES LA CLAVE: Da espacio arriba para que la curva no sea picuda
           dataPointsColor={COLORS.primary}
-          dataPointsRadius={4}
+          dataPointsRadius={3}
           areaChart
-          startFillColor="rgba(99, 102, 241, 0.1)"
-          endFillColor="rgba(99, 102, 241, 0.01)"
+          startFillColor="#6366f1"
+          startOpacity={0.15} // Transparencia real para móvil
+          endOpacity={0.01}   // Transparencia real para móvil
           noOfSections={3}
           xAxisLabelTextStyle={{
             color: COLORS.secondary, 
-            fontSize: 10, 
-            fontWeight: 'bold'
+            fontSize: 9, 
+            fontWeight: '600'
           }}
         />
       </View>
