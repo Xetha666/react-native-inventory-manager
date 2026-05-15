@@ -1,16 +1,7 @@
-import {
-  BellIcon,
-  ChevronRightIcon,
-  EditIcon,
-  ExternalLinkIcon,
-  HelpIcon,
-  LocationIcon,
-  LogoutIcon,
-  PreferencesIcon,
-  SecurityIcon
-} from '@/components/Icon';
+import { BellIcon, ChevronRightIcon, EditIcon, ExternalLinkIcon, HelpIcon, LocationIcon, LogoutIcon, PreferencesIcon, SecurityIcon } from '@/components/Icon';
 import ScreenWrapper from "@/components/ScreenWrapper";
-import { router } from 'expo-router';
+import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/lib/supabase';
 import React from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 
@@ -41,8 +32,17 @@ const SectionTitle = ({ title }: { title: string }) => (
   </Text>
 );
 
+
 export default function SettingsPage() {
   const SETTINGS_BG = "#F5F7FF";
+  const { profile } = useAuth();
+
+  async function handleSignOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error.message);
+    }
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: SETTINGS_BG }}>
@@ -54,15 +54,19 @@ export default function SettingsPage() {
           <View className="items-center mt-12 mb-8">
             <View className="relative">
               <Image 
-                source={{ uri: 'https://i.pravatar.cc/300?img=12' }} 
+                source={{ uri: profile?.avatar_url || 'https://i.pravatar.cc/300?img=12' }} 
                 className="w-28 h-28 rounded-full border-4 border-white shadow-sm"
               />
               <View className="absolute bottom-1 right-1 bg-indigo-600 w-8 h-8 rounded-full border-2 border-white items-center justify-center">
                 <EditIcon />
               </View>
             </View>
-            <Text className="text-2xl font-bold text-slate-800 mt-4">Alejandro Moreno</Text>
-            <Text className="text-slate-500 font-medium">Gerente de Operaciones</Text>
+            <Text className="text-2xl font-bold text-slate-800 mt-4">
+              {profile?.full_name || 'Nombre no disponible'}
+            </Text>
+            <Text className="text-slate-500 font-medium">
+              @{profile?.username || 'Usuario no disponible'}
+            </Text>
           </View>
 
           {/* Account Section */}
@@ -110,18 +114,15 @@ export default function SettingsPage() {
           </View>
 
           {/* Logout Button */}
-          <Pressable 
-            onPress={() => router.replace('/')}
-            className="mt-10 mb-6 flex-row justify-center items-center py-4 rounded-2xl border border-red-200 bg-red-50/30 active:bg-red-50"
-          >
+          <Pressable onPress={handleSignOut} className="mt-10 mb-6 flex-row justify-center items-center py-4 rounded-2xl border border-red-200 bg-red-50/30 active:bg-red-50">
             <LogoutIcon />
             <Text className="text-red-500 font-bold ml-2">Cerrar Sesión</Text>
           </Pressable>
 
           {/* Footer */}
-          <View className="items-center mb-20">
-            <Text className="text-[10px] font-bold text-slate-300 uppercase tracking-tighter">InventoryFlow v2.4.1</Text>
-            <Text className="text-[10px] text-slate-300">Made with precision for global logistics</Text>
+          <View className="items-center mb-24">
+            <Text className="text-medium font-bold text-slate-300 uppercase tracking-tighter">InventoryFlow v2.4.1</Text>
+            <Text className="text-medium text-slate-300">Made with precision for global logistics</Text>
           </View>
 
         </ScrollView>
