@@ -1,4 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from 'react';
@@ -45,7 +46,27 @@ export const FaceIdIcon = ({ color = COLORS.secondary, size = 28 }: IconProps) =
 );
 
 export const SearchIcon = ({ color = COLORS.primary, size = 20 }: IconProps) => (
-  <MaterialIcons name="search" size={size} color={color} />
+  <Ionicons name="search" size={size} color={color} />
+);
+
+export const UserIcon = ({ color = COLORS.white, size = 16 }: IconProps) => (
+  <Ionicons name="person" size={size} color={color} />
+);
+
+export const CubeIcon = ({ color = COLORS.secondary, size = 32 }: IconProps) => (
+  <Ionicons name="cube-outline" size={size} color={color} />
+);
+
+export const MinusIcon = ({ color = COLORS.dark, size = 24 }: IconProps) => (
+  <Ionicons name="remove" size={size} color={color} />
+);
+
+export const PlusIcon = ({ color = COLORS.primary, size = 24 }: IconProps) => (
+  <Ionicons name="add" size={size} color={color} />
+);
+
+export const CheckCircleIcon = ({ color = COLORS.white, size = 22 }: IconProps) => (
+  <Ionicons name="checkmark-circle-outline" size={size} color={color} />
 );
 
 export const EditIcon = ({ color = COLORS.white, size = 16 }: IconProps) => (
