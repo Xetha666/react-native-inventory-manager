@@ -1,20 +1,63 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  # React Native Inventory Manager
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  ## Tech Stack
+  - React Native 0.81 + Expo SDK 54 (Expo Router v6, file-based routing)
+  - TypeScript (strict mode, path aliases via @/ -> root)
+  - NativeWind v4 (Tailwind CSS for React Native, utility-first styling)
+  - Supabase (PostgreSQL database, Auth, Realtime)
+  - expo-camera for barcode scanning
+  - expo-local-authentication for biometric auth
+  - react-native-gifted-charts for weekly inventory charts
+  - react-native-reanimated for animations
+
+  ## Architecture
+  - File-based routing via Expo Router under app/
+    - app/(auth)/ → login and auth screens (unauthenticated)
+    - app/(screens)/ → protected screens: home, inventory, scanner, settings
+    - app/_layout.tsx → root layout with AuthProvider + Navbar
+  - context/AuthContext.tsx → global auth state (session, user, profile, signOut)
+  - lib/supabase.ts → Supabase client singleton
+  - components/ → shared UI components (Header, Navbar, Loader, Icon, ScreenWrapper)
+  - components/dashboard/ → dashboard widgets (Valorization, AmountProducts, AlertStock, GraphicWeekly)
+  - hooks/ → custom hooks (e.g. useAuthRedirect)
+  - styles/global.css → global CSS entry point for NativeWind
+
+  ## Design System
+  - Color palette defined in tailwind.config.js under brand.*:
+    - brand-primary: #6366f1 (indigo, active state)
+    - brand-secondary: #94a3b8 (slate, inactive/muted)
+    - brand-light: #eef2ff (soft indigo background)
+    - brand-navbar: #ffffff (white navbar background)
+    - brand-off-white: #F9FAFF (app background)
+  - Use brand-* tokens always — never hardcode hex colors in components
+  - Rounded corners: rounded-[30px] for cards, rounded-t-3xl for navbar container
+  - Shadows: elevation + shadowColor/Offset/Opacity/Radius for cross-platform
+
+  ## Conventions
+  - Conventional Commits (feat, fix, chore, refactor, docs, etc.)
+  - Always use @/ path alias, never relative ../../ imports
+  - NativeWind className for styling; StyleSheet.create only for dynamic/platform values
+  - All screens wrapped in <ScreenWrapper> + <Header>
+  - Auth guard done via useAuthRedirect hook in root layout, not in individual screens
+  - Supabase RLS enabled on all tables; always use supabase.auth.getUser() for server-side checks
+  - Environment secrets stored in .env (gitignored); access via expo-constants
+  - Spanish UI language (the app and all user-facing text is in Spanish)
+
+  ## Domain
+  - Mobile inventory management for small businesses
+  - Core entities: products (with barcode, stock, price, category), categories, stock alerts
+  - Key features: product CRUD, barcode scanner, low-stock alerts, weekly chart, valuation summary
+  - Authentication: email/password via Supabase Auth with biometric unlock option
+
+rules:
+  proposal:
+    - Keep proposals concise and focused on the mobile use case
+    - Always include impact on Supabase schema if data model changes
+    - Note if a change requires a new Expo permission (camera, biometrics, etc.)
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Each task must touch only one screen or one component group
+    - Include a Supabase migration step if schema changes are needed
